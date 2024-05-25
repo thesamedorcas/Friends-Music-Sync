@@ -20,7 +20,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
 
 def get_spotify_playlist():
-    user_playlists= sp.user_playlists('spotify')
+    user_playlists= sp.current_user_playlists(limit= 50, offset=0)
     for playlist in user_playlists['items']:
         print(playlist['name'])
 
