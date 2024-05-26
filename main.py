@@ -66,9 +66,8 @@ def get_tracks_from_playlist(playlist_id):
         tracks_in_playlist.append(track["track"]["name"])
     return tracks_in_playlist
 
-
-if __name__ == '__main__':
-
+def migrate_from_spotify_to_youtube():
+    """ migrates playlists and songs in playlist from spotify to youtube"""
     # move liked spotify tracks to yt music
 
     # step 1: get liked songs from spotify
@@ -87,8 +86,10 @@ if __name__ == '__main__':
         songs_in_playlist = get_tracks_from_playlist(playlist_id)
         # step 4: copy songs to yt music
         copy_songs_to_yt_music(name, songs_in_playlist)
-
-
     print("completed migration from spotify to youtube")
+
+if __name__ == '__main__':
+
+   migrate_from_spotify_to_youtube()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
