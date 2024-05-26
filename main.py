@@ -12,8 +12,10 @@ What I want my app to do:
 '''
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+from ytmusicapi import YTMusic
+ytmusic = YTMusic("oauth.json")
 
-scope = "playlist-read-private"
+scope = "playlist-read-private user-library-read"
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
@@ -23,6 +25,25 @@ def get_spotify_playlist():
     user_playlists= sp.current_user_playlists(limit= 50, offset=0)
     for playlist in user_playlists['items']:
         print(playlist['name'])
+
+
+def get_user_tracks():
+    user_tracks= sp.current_user_saved_tracks(limit= 50, offset= 0)
+    song_list = []
+    for track in user_tracks['items']:
+        print(track['track']['name'])
+        song_list.append(track['track']['name'])
+    return song_list
+
+
+def copy_songs_to_yt_music(playlist_name, tracks):
+    playlistId = ytmusic.create_playlist(playlist_name, "test description")
+
+
+    for track in tracks:
+        search_results = ytmusic.search(track)
+        ytmusic.add_playlist_items(playlistId, [search_results[0]['videoId']])
+
 
 
 
@@ -46,8 +67,8 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-
-    get_spotify_playlist()
+    tracks= get_user_tracks()
+    copy_songs_to_yt_music("liked_from_spotify", tracks)
     print_hi('PyCharm')
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
